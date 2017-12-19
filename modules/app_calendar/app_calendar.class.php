@@ -266,6 +266,11 @@ function usual(&$out) {
    $out['EVENTS_TODAY']=$events_today;
   }
 
+  $events_pastpPan=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<='3') AND IS_DONE='0') ORDER BY AGE");
+  if ($events_pastpPan) {
+   $out['EVENTS_PASTPLAN']=$events_pastpPan;
+  }
+   
   $events_past=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE TO_DAYS(DUE)<TO_DAYS(NOW()) AND IS_TASK=1 AND IS_DONE=0 ORDER BY IS_TASK DESC, AGE");
   if ($events_past) {
    $out['EVENTS_PAST']=$events_past;
