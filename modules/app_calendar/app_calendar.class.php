@@ -349,7 +349,11 @@ function usual(&$out) {
   if ($events_pastpPan) {
    $out['EVENTS_PASTPLAN']=$events_pastpPan;
   }
-
+	  
+  $events_pastplan=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE,calendar_categories.TITLE as CATEGORY FROM calendar_events LEFT JOIN calendar_categories ON calendar_events.CALENDAR_CATEGORY_ID=calendar_categories.ID WHERE (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<=3) AND IS_DONE=0) ORDER BY calendar_categories.TITLE,AGE");
+  if ($events_pastplan) {
+   $out['EVENTS_PASTPLAN']=$events_pastplan;
+  }  
 
   if (empty($calendar_categories[$k1]['EVENTS_PAST']) and empty($calendar_categories[$k1]['EVENTS_SOON']) and empty ($calendar_categories[$k1]['RECENTLY_DONE'])) {
    $calendar_categories[$k1]['REC_COUNT']=0;
